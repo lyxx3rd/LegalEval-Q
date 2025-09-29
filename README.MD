@@ -1,16 +1,25 @@
-## 资源占用
+<div align="center">
 
-python = 3.12.9;
+# LegalEval-Q
 
-磁盘占用约: 17G;
+## A New Benchmark for The Quality Evaluation of LLM-Generated Legal Text
 
-显存占用约:18G;
+[README_ZH](./README_zh.MD.md)
 
-## 配置环境
+</div>
+## Resource Occupancy 
+
+python = 3.12.9; 
+
+Disk usage: approximately 17G; 
+
+Approximate VRAM usage: 18G;
+
+## Configure the environment
 ```bash
 pip install -r requirements.txt
 ```
-## 模型下载
+## Model Download
 
 Qwen_7B_Review_Tuned_model : https://www.modelscope.cn/l424102993/LLM_TQ_Tuned_model.git
 
@@ -18,7 +27,8 @@ Regression_model_base : https://www.modelscope.cn/iic/nlp_bert_backbone_base_std
 
 Regression_model_regression : https://www.modelscope.cn/l424102993/LLM_TQ_Regression_model.git
 
-使用git下载(与魔塔sdk二选一)
+Use Git for download (choose one between Git and Magic Tower SDK)
+
 ```bash
 cd data/models
 git clone https://www.modelscope.cn/l424102993/LLM_TQ_Tuned_model.git
@@ -26,74 +36,78 @@ git clone https://www.modelscope.cn/iic/nlp_bert_backbone_base_std
 git clone https://www.modelscope.cn/l424102993/LLM_TQ_Regression_model.git
 ```
 
-使用魔塔sdk下载(推荐)
+Download using the Magic Tower SDK (recommended)
+
 ```python
-#SDK模型下载
+#SDK Model Download
 from modelscope import snapshot_download
 model_dir = snapshot_download('l424102993/LLM_TQ_Tuned_model', cache_dir = "./data/models/")
 model_dir = snapshot_download('iic/nlp_bert_backbone_base_std', cache_dir = "./data/models/")
 model_dir = snapshot_download('l424102993/LLM_TQ_Regression_model', cache_dir = "./data/models")
-## 替换其他路径
+## Replace other paths
 ```
-## 使用方式
+## Usage Method 
+### 1. Modify the configuration file 
 
-### 1. 修改配置文件
+Modify the configuration file: ./configs/config.yaml 
 
-修改配置文件 ./configs/config.ymal
+Modify the model directory in config.ymal and specify the CUDA number based on the download model's address. 
 
-根据下载模型的地址修改config.ymal的模型目录以及指定cuda号
+### 2. Start the requests scoring service 
 
-### 2. 启动评分requests服务
+2.1 Directly use the "bass" command to start the request service
 
-2.1 直接使用bass启动request服务
 ```bash
 bash serve.py
 ```
 
-2.2 手动启动
-如需指定虚拟环境或其他需求, 可手动启动 ./src/evaluator_request.py
-注意手动启动时,可能需要修改evaluator_request.py里config.yaml的读取的相对路径, 以及config.yaml里模型的相对路径
+2.2 Manual Startup
 
-### 3.添加API keys
-在Evaluate_example.ipynb 对应位置添加Qwen的API Keys, 或自行修改相关代码以调用其他模型
+If you need to specify a virtual environment or other requirements, you can manually start ./src/evaluator_request.py
 
-### 4.模型测试
-使用Evaluate_example.ipynb 进行单个模型单次的评分测试
+Note that when starting manually, you may need to modify the relative path for reading config.yaml in evaluator_request.py, as well as the relative path for the model in config.yaml
 
-## 批量评估
+### 3. Add API keys
 
-1.使用/notebooks/Evaluate_batch.ipynb 调用api接口或本地模型进行多个模型的评分测试
+At the corresponding location in Evaluate_example.ipynb, add the API keys for Qwen, or modify the relevant code to call other models 
 
-2.使用/notebooks/Generated_Result_Visualization_Analysis.ipynb可视化查看并对比分析结果
+### 4. Model Testing
 
-# 研究成果
+Use Evaluate_example.ipynb to conduct a single model's scoring test once.
 
-## 模型质量的影响因素
+## Batch Evaluation 
 
-### 模型参数量:7B-14B性价比最佳
+1. Use/notebooks/Evaluate_batch.ipynb to call the API interface or the local model to conduct scoring tests for multiple models 
 
-受到模型训练方式以及训练数据集的影响, 模型的文本质量得分及其推理能力都在7B-14B时接近瓶颈. 
+2. Use the notebook "Generated_Result_Visualization_Analysis.ipynb" to visually view and compare the analysis results.
+
+# Research Results 
+
+## Factors Affecting Model Quality 
+
+Model parameter size: 7B - 14B - Best value for money 
+Due to the influence of the model training method and the training dataset, the text quality score and reasoning ability of the model approach a bottleneck around 7B-14B.
 
 ![文本得分及数学能力对比图](./images/fig_dis_f2_Score_and_math.png)
 
-即在垂直领域的大模型部署时, 并不需要去追求模型过大, 因为其边际效应递减非常明显, 反而是模型的架构的更新或者原始数据集/微调数据集的质量会对其影响更大.
+When deploying large models in vertical domains, there is no need to aim for overly large models, as their marginal effects tend to diminish significantly. Instead, it is the update of the model architecture or the quality of the original dataset/micro-tuned dataset that has a greater impact on the model. 
 
-### 推理模型:推理模型优于普通模型
+## Reasoning Model: The reasoning model is superior to the ordinary model. 
 
-虽然已经有大量的论文论证的CoT的有效性以及推理模型的性能, 但是大多数的论证都是集中有推理模型在推理能力(指令遵从能力,数学能力等)的差异, 但是我们发现对于纯粹的输出文本的文本质量, 推理模型也会明显优于普通的模型.
+Although there have been numerous papers demonstrating the effectiveness of CoT and the performance of the reasoning models, most of the arguments have focused on the differences in reasoning abilities (such as compliance with instructions, mathematical ability, etc.) of the reasoning models. However, we have found that for the quality of the output text alone, the reasoning models also perform significantly better than ordinary models.
 
 ![推理模型和普通模型](./images/fig_dis_f4_Reasoning_Base.png)
 
 
-## 最佳模型选择:
+## Selection of the Best Model: 
 
-### 价格
+### Price 
 
-不同的模型受其供应商和API渠道的影响在使用价格上表现出了较大的差距. 本实验对比了API的使用价格(RMB/1M tokens)和输出的文本质量. 在目前测试模型中, 性价比最高的为vocles-lite, qwen-plus 以及deepseek-v3-0324.
+Different models vary greatly in their usage prices due to their suppliers and API channels. This experiment compared the usage prices of APIs (RMB/1M tokens) with the quality of the output text. Among the currently tested models, the ones with the highest cost-performance ratio are vocles-lite, qwen-plus, and deepseek-v3-0324.
 
 ![推理模型和普通模型](./images/fig_dis_f6_Price_AdjCV.png)
 
-## 引用
+## Cite
 ```
 @misc{yunhan2025legalevalqnewbenchmarkquality,
       title={LegalEval-Q: A New Benchmark for The Quality Evaluation of LLM-Generated Legal Text}, 
