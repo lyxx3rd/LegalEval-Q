@@ -110,13 +110,18 @@ Different models vary greatly in their usage prices due to their suppliers and A
 
 ## Cite
 ```
-@misc{yunhan2025legalevalqnewbenchmarkquality,
-      title={LegalEval-Q: A New Benchmark for The Quality Evaluation of LLM-Generated Legal Text}, 
-      author={Li yunhan and Wu gengshen},
-      year={2025},
-      eprint={2505.24826},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2505.24826}, 
+@article{li_legaleval-q_2026,
+	title = {Legaleval-q: a benchmark for quality evaluation of {LLM}-generated {Chinese} legal text},
+	volume = {68},
+	issn = {0219-3116},
+	url = {https://doi.org/10.1007/s10115-026-02703-7},
+	doi = {10.1007/s10115-026-02703-7},
+	abstract = {As large language models (LLMs) are increasingly used in legal applications, current evaluation benchmarks focus mainly on factual accuracy while neglecting important linguistic aspects such as clarity, coherence, and terminology. To address this gap, we first develop a regression-based framework to evaluate legal text quality, second construct a specialized set of legal questions, and third analyze 49 LLMs using this framework. Our study primarily focuses on Chinese legal texts due to data availability, while the methodology itself remains language-agnostic and adaptable to other domains. We identify three key findings: (1) legal text quality plateaus at relatively small scales, with Qwen2.5 models flattening beyond 7B (72B adds only 2.7\%) and Qwen3 models showing an early plateau at 1.7B; (2) engineering choices such as quantization and context length have no statistically significant effect on legal text quality (\$\$p {\textgreater} 0.0167\$\$), supporting cost-efficient deployment; (3) reasoning models consistently outperform base architectures. A significant outcome of our research is the release of a ranking list and trade-off frontier visualization, which highlight the Qwen3 series as the optimal choice for cost–performance trade-offs. This work advances domain-specific evaluation of linguistic quality by integrating multidimensional assessment with data-driven model analysis. We additionally adopt a variance-penalized metric, AdjScore, to robustly assess model performance. Code and models are available at: https://github.com/lyxx3rd/LegalEval-Q.},
+	number = {1},
+	journal = {Knowledge and Information Systems},
+	author = {Li, Yunhan and Wu, Gengshen},
+	month = feb,
+	year = {2026},
+	pages = {83},
 }
 ```
